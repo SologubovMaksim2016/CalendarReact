@@ -9,11 +9,11 @@ const CalendarListDateItem = ({data})=> {
         return (            
         !data.events===true ? <div></div> : 
         <EventItem data = {data}/>        
-        )};
+    )};
 
    
                     
-    const el1 = data.name ==='0' ? <div></div> :  
+    const elem = data.name ==='0' ? <div></div> :  
                 <div class = {data.daySelected ? "dayWeek daySelected" : "dayWeek" }> 
                     <div class ={data.redPoint ? "redPoint " : "" }></div>
                     <div class = {data.wd ? "date wd" : "date"}>{data.name}</div>
@@ -29,7 +29,7 @@ const CalendarListDateItem = ({data})=> {
 
     return (
         <>    
-            {el1}
+            {elem}
         </>
         
     );
