@@ -5,7 +5,7 @@ import CalendarListDateItem from './CalendarListDateItem';
 const CalendarListDate = ({weekData})=> {
        let key=10;
     return (
-        <div class="calendar__date">
+        <div className="calendar__date">
                     {weekData.map(function (item) { 
                         return (                
                             <CalendarListDateItem key={key++} data={item}/>

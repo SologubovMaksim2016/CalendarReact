@@ -1,5 +1,6 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
+import './EventItem.css'
 
 
 const EventItem = ({data})=> {
@@ -7,12 +8,12 @@ const EventItem = ({data})=> {
     let clazz = "events_for ev"+data.ev.length;
     let key=1000;
     return (        
-        <div class={clazz} >
+        <div className={clazz} >
             {data.ev.map(function (item) {   
                          
                 clazz = "line "+item;
 
-                return <div key = {key++} class = {clazz}></div> ;
+                return <div key = {key++} className = {clazz}></div> ;
             })}
         </div>        
     );

@@ -8,17 +8,17 @@ const ListEvents = ({data}) =>{
     let key=300;
     const elems = data.map((item) => {
         return (
-            <div key = {key++} class="events">
-            <div class="eventsName">PRACTICEEEE</div>
-            <div class="timeEvents">11:00 AM</div>
-            <div class="descritpionEvents">Sope Greek</div>
+            <div key = {key++} className="events">
+            <div className="eventsName">PRACTICEEEE</div>
+            <div className="timeEvents">11:00 AM</div>
+            <div className="descritpionEvents">Sope Greek</div>
         </div>
         )
     });
 
     return(
-        <div class="listEvents">
-                <div class='dateEvents'> TUESDAY, 20 JUNE</div> 
+        <div className="listEvents">
+                <div className='dateEvents'> TUESDAY, 20 JUNE</div> 
                 {elems}               
                 {/* <div><ListEventsItem /></div>
                 <div><ListEventsItem /></div>

@@ -3,9 +3,9 @@ import React from 'react';
 
 const SelectWeekMonth = () =>{
     return (
-        <div class="selectWeekMonth">
-                <button class="but" onclick="weekClick()">This week</button>
-                <button class="but" onclick="monthClick()">This month</button>
+        <div className="selectWeekMonth">
+                <button className="but" onClick="weekClick()">This week</button>
+                <button className="but" onClick="monthClick()">This month</button>
               </div>
     );
 };

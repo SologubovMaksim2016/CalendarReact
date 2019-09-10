@@ -13,78 +13,10 @@ import moment from "moment";
 
 const App = () =>{
 
-
-    const nameDays = ['S','M','T','W','T','F','S'];
-
-    const weekData1=[];
-
-    
-
-    // console.log(numDay);
-    
-
-    function rendermonth(offset) {
-        let currMonth=moment().add(offset, 'month');
-        console.log(currMonth.format("MMM Do YY"));
-        let currDay = moment().daysInMonth();
-        console.log("TCL: rendermonth -> currDay", currDay)
-        
-        let startMonthDay = currMonth.startOf('month').day();//
-        
-
-        for(let i=0; i<startMonthDay;i++){
-            weekData1.push({ name: '0' /*пустой div */})
-        }
-
-        let numDay=1;
-        for(let i=0; i<moment().add(offset, 'month').daysInMonth();i++){           
-            weekData1.push( { 
-                name: numDay++ , 
-                daySelected: false, 
-                redPoint: false,
-                wd:checkWd(startMonthDay,numDay),
-                events: true, ev: ["aquamarine","grey","grey","aquamarine"]})
-            
-        
-        }    
-    };
-    rendermonth(0);
-
-        function checkWd(stMon,nDay){
-             return ((stMon+nDay-1)%7 && (stMon+nDay-2)%7)==0? true:false ;
-        }
-    
-
-
-
-
-
-
-
-
-    // const mom = moment('19760419').format("MMM Do YY");
-    // console.log(mom);
-
-    const weekData = [
-        { name: '0' /*пустой div */},
-        { name: '0' /*пустой div */},
-        { name: '0' /*пустой div */},       
-        { name: '1' ,  daySelected: true, redPoint: true, wd:true, events: true, ev: ["aquamarine","grey","grey","aquamarine"]},
-        { name: '2' ,  daySelected: false, redPoint: false, wd:true, events: false, ev: 0},
-        { name: '3' ,  daySelected: false, redPoint: false, wd:false, events: false, ev: 0},
-        { name: '4' ,  daySelected: false, redPoint: false, wd:false, events: false, ev: 0},
-        { name: '5' ,  daySelected: false, redPoint: false, wd:false, events: false, ev: 0},
-        { name: '6' ,  daySelected: true, redPoint: false, wd:false, events: true, ev: ["aquamarine","grey","grey","aquamarine"]},
-        { name: '7' ,  daySelected: false, redPoint: false, wd:false, events: false, ev: 0},
-        { name: '8' ,  daySelected: false, redPoint: false, wd:true, events: false, ev: 0},
-        { name: '9' ,  daySelected: false, redPoint: true, wd:true, events: false, ev: 0},
-        { name: '10' , daySelected: false, redPoint: false, wd:false, events: true, ev: ["aquamarine","grey","grey","aquamarine"]},
-        { name: '11' , daySelected: false, redPoint: false, wd:false, events: false, ev: 0},
-        { name: '12' , daySelected: false, redPoint: false, wd:true, events: false, ev: 0},
-        { name: '13' , daySelected: false, redPoint: false, wd:false, events: false, ev: 0}
-        
-    
-    ];
+    let offsetMonth = 0;
+    const nameDays = ['S','M','T','W','T','F','S'];  //дни недели
+    const weekData=[];
+    const headerData = [];
     var eventsData= [
         {
             date:"20.06.2019",
@@ -108,15 +40,60 @@ const App = () =>{
         }
       ];
 
+    function rendermonth(offset) {
+        let currMonth=moment();
+
+        console.log(currMonth.format("DD"));
+        //let daysInMonth = moment().daysInMonth();
+        
+        
+        let startMonthDay = moment().add(offset, 'month').startOf('month').day();//номер дня недели начала месяца
+        for(let i=0; i<startMonthDay;i++){   //добавляем пустые ячейки 
+            weekData.push({ name: '0'+i });
+        }
+        let numDay=1;  // начинаем отсчет с первого числа
+        for(let i=0; i<moment().add(offset, 'month').daysInMonth();i++){           
+            weekData.push( { 
+                redPoint: checkRePoint(numDay,offset),
+                daySelected: checkDaySel(numDay,offset), 
+               
+                name: numDay++ ,                 
+                wd:checkWd(startMonthDay,numDay),
+                events: true, ev: ["aquamarine","grey","grey","aquamarine"]})  
+        }    
+        headerData.push(moment().add(offset-1, 'month').format('MMM'));
+        headerData.push(moment().add(offset, 'month').format('MMMM').toLocaleUpperCase());
+        headerData.push(moment().add(offset+1, 'month').format('MMM'));       
+
+
+
+    };
+        //указывает на текущую дату (неизменно )
+        function checkRePoint( nDay, offset){   
+            return   ( nDay== moment().format('D')   &&  offset==0 )? true:false               
+        }
+        //указывает вначале на текущую дату (изменяется выбором  )
+        function checkDaySel( nDay, offset){        
+            return  ( nDay== moment().format('D')   &&  offset==0 )? true:false 
+        }
+
+        function checkWd(stMon,nDay){
+             return ((stMon+nDay-1)%7 && (stMon+nDay-2)%7)==0? true:false ;
+        }
+
+     rendermonth(offsetMonth);
+
+
     
     return(
-        
-        <div class="calendar noselect">                
-                <Header />
+       
+        <div className="calendar noselect">     
+                 <button>-</button> <button>+</button>   
+                <Header headerData = {headerData}/>
                 <SelectWeekMonth />    
-                <div class="overflow">    
+                <div className="overflow">    
                         <CalendarDays days = {nameDays}/>
-                        <CalendarListDate weekData= {weekData1}/>
+                        <CalendarListDate weekData= {weekData}/>
                         <ListEvents data = {eventsData}/>
                 </div>
         </div>

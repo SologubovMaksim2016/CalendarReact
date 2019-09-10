@@ -165,40 +165,11 @@
          font-weight: 700;    
         
     }
-    .events_for{
-      display: grid;
-      padding: 2px  ;        
-    }
-    .ev1{    
-      grid-template-columns:  1fr ;    
-    }
-    .ev2{    
-      grid-template-columns:  1fr 1fr ;    
-    }
-    .ev3{    
-      grid-template-columns:  1fr 1fr 1fr ;    
-    }
-    .ev4{    
-      grid-template-columns: 1fr 1fr 1fr 1fr ;    
-    }
+    
     .reda{
       color: var(--red);
     }
     
-    .line {
-      margin-left: 1px;   
-      width: 90%; 
-      height: 3px; 
-      border-radius: 3px;
-    }
-  
-    .aquamarine
-     {    
-      border: 2px solid  var(--aquamarine);
-    }
-    .grey{
-      border: 2px solid  var(--lightgrey);
-    }
     
     .calendar {
       /* border: 1px solid red; */

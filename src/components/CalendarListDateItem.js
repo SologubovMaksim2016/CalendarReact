@@ -13,7 +13,7 @@ const CalendarListDateItem = ({data})=> {
 
    
                     
-    const elem = data.name ==='0' ? <div></div> :  
+    const elem = data.name[0] ==='0' ? <div></div> :  
                 <div class = {data.daySelected ? "dayWeek daySelected" : "dayWeek" }> 
                     <div class ={data.redPoint ? "redPoint " : "" }></div>
                     <div class = {data.wd ? "date wd" : "date"}>{data.name}</div>
