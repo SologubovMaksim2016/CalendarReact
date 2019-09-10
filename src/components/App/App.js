@@ -6,12 +6,14 @@ import CalendarDays from '../CalendarDays/CalendarDays';
 import CalendarListDate from '../CalendarListDate'
 import ListEvents from '../ListEvents';
 import moment from "moment";
+// import eventsData from './eventsData';
 
 
 class App2 extends Component {
 
     state ={
-        offsetMonth: 0
+        offsetMonth: 0,
+        selectWeekMonthPanel: false
     }
 
     
@@ -43,6 +45,7 @@ class App2 extends Component {
 
 
     rendermonth = (offset) => {
+        console.log(this.eventsData);
         let currMonth=moment();
         this.weekData=[];
         this.headerData=[];
@@ -58,8 +61,9 @@ class App2 extends Component {
                
                 name: numDay++ ,                 
                 wd:this.checkWd(startMonthDay,numDay),                 
-                ev: ["aquamarine","grey","grey","aquamarine"]})  
-        }    
+                ev: this.checkEvents(offset,numDay)
+            });  
+        };    
         this.headerData.push(moment().add(offset-1, 'month').format('MMM'));
         this.headerData.push(moment().add(offset, 'month').format('MMMM').toLocaleUpperCase());
         this.headerData.push(moment().add(offset+1, 'month').format('MMM'));       
@@ -67,8 +71,13 @@ class App2 extends Component {
 
 
     };
-        checkEvents = () => {
+        checkEvents = (offset,numDay) => {
 
+
+            return (
+
+                ["aquamarine","grey","grey","aquamarine"]
+            );
         };
         //указывает на текущую дату (неизменно )
         checkRePoint = ( nDay, offset) => {   
@@ -84,42 +93,52 @@ class App2 extends Component {
         };
 
 
-    plusButton = () => { 
+    nextButton = () => { 
 
         this.setState({
             offsetMonth: ++this.state.offsetMonth
         });
-        console.log("TCL: plusButton -> offsetMonth", this.state.offsetMonth)
-     }
-     minusButton = () => {
+    };
+    prevButton = () => {
         
         this.setState({
             offsetMonth: --this.state.offsetMonth
         });
-        console.log("TCL: minusButton -> offsetMonth", this.state.offsetMonth)
-     }
+    };
+    arrowClick = () => {
+        this.setState({
+            selectWeekMonthPanel: !this.state.selectWeekMonthPanel
+        });
+    };
     
      
     
     render(){
         
-        const {offsetMonth} = this.state ;
-     
+        const {offsetMonth,selectWeekMonthPanel} = this.state ;
+        
 
         this.rendermonth(offsetMonth);
 
 
-     
+    const dataHeader = [this.headerData,
+                            this.nextButton,
+                            this.prevButton,                            
+                            selectWeekMonthPanel,
+                            this.arrowClick]; 
+
+    const OverflowClazz =  selectWeekMonthPanel ?   "overflow1" : "overflow2"    ;               
+    
+
     return(
        
-        <div className="calendar noselect">     
-                 <button onClick = {this.minusButton}>-</button> <button onClick = {this.plusButton}>+</button>   
-                <Header headerData = {this.headerData}/>
-                <SelectWeekMonth />    
-                <div className="overflow">    
-                        <CalendarDays days = {this.nameDays}/>
-                        <CalendarListDate weekData= {this.weekData}/>
-                        <ListEvents data = {this.eventsData}/>
+        <div className="calendar noselect"> 
+                <Header dataHeader= {dataHeader} />
+                <SelectWeekMonth select = {selectWeekMonthPanel}/>    
+                <div className={OverflowClazz}> 
+                    <CalendarDays days = {this.nameDays} select = {selectWeekMonthPanel}/>
+                    <CalendarListDate weekData= {this.weekData}/>
+                    <ListEvents data = {this.eventsData} />
                 </div>
         </div>
     );
@@ -127,7 +146,7 @@ class App2 extends Component {
     }
 }
 
-
+/*
 const App = () =>{
 
     let offsetMonth = 0;
@@ -227,6 +246,6 @@ const App = () =>{
                 </div>
         </div>
     );
-};
+};*/
 
 export default App2;

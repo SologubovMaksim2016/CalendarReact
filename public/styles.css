@@ -1,3 +1,8 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 :root {
     --color1: #0b3156;  /*основной цвет шапки, цвет цифр календаря, и выдел. дня */
@@ -62,11 +67,12 @@
       padding-top: 8px;
      } 
      .arrowImg {
+      /* border: 1px solid yellow; */
         width: 20px;
         height: 10px;
      }
      .arrow {  
-         /* border: 1px solid yellow; */
+         /* border: 1px solid yellow;  */
          display:contents;
          font-size: 16px;
          color:var(--aquamarine);  /*#5fb7c3;*/
@@ -82,19 +88,21 @@
     
      .selectWeekMonth { 
         /* display: block; */
-        display: none; 
+        /* display: none;  */
         
         margin: auto;
-         width: 300px; 
+        width: 300px; 
         background:var(--color1); /*#0e2456;  */
-        height: 25px;
+        height: 25px; 
       }
     .but:first-child {
-      margin-left: 100px;
+      margin-left: 70px;
     }
     .but {
       display:inline-block;
+      margin-left: 20px;
       height: 22px;
+      width: 70px;
       border: 1px solid var(--grey);/*#7d94b4;*/
       border-radius: 13px;
       background-color:var(--color1);/* #0e2456;*/
@@ -292,12 +300,19 @@
       border-radius: 1px; 
     }
     
-    .overflow {   
+    .overflow1 {   
       overflow-y: scroll; /* Добавляем полосы прокрутки */
       margin: auto;
       width: 300px;
-      height: 300px;   
+      height: 275px;  /* вот это редактировать*/ 
     }
+    .overflow2 {   
+      overflow-y: scroll; /* Добавляем полосы прокрутки */
+      margin: auto;
+      width: 300px;
+      height: 300px;  /* вот это редактировать*/ 
+    }
+
     .daySelected {    
       border-radius: 4px;
       background-color: var(--color1);
