@@ -1,6 +1,6 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
-import CalendarListDateItem from './CalendarListDateItem';
+import CalendarListDateItem from '../CalendarListDateItem';
 
 const CalendarListDate = ({weekData})=> {
        let key=10;
