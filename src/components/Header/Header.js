@@ -3,13 +3,20 @@ import React from 'react';
 
 const Header =({dataHeader})=>{
 
-    let [headerData,nextButton,prevButton,selectWeekMonthPanel,arrowClick] = dataHeader;
-    console.log("TCL: Header -> selectWeekMonthPanel", selectWeekMonthPanel)
+    let [headerData,nextButton,prevButton,selectWeekMonthPanel
+        ,arrowClick] = dataHeader;
+     console.log("TCL: Header -> size", headerData[3])
     
+    let style = {
+      fontSize: headerData[3]
+    };
     
     return (
         <div className="header">             
-                <div className="current"><div className="currentCenter">{headerData[1]}</div>            
+                <div className="current">
+                  <div className="currentCenter" style={style}>
+                    {headerData[1]}
+                  </div>            
                   <div className="arrow">
                     <img className="arrowImg" 
                          src={ selectWeekMonthPanel ?  "arrowUp.png" : "arrowDown.png" }

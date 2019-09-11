@@ -3,12 +3,12 @@ import React from 'react';
 
 const SelectWeekMonth = ({select}) =>{
 
-   
+   let [selectPanel,monthSelect,weekSelect] = select;
     return (
-        !select? null:
+        !selectPanel? null:
         <div className="selectWeekMonth">
-                <button className="but" onClick="weekClick()">This week</button>
-                <button className="but" onClick="monthClick()">This month</button>
+                <button className="but" onClick={weekSelect}>This week</button>
+                <button className="but" onClick={monthSelect}>This month</button>
               </div>
     );
 };

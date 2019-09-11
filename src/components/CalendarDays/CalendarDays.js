@@ -3,7 +3,7 @@ import React from 'react';
 
 
 const CalendarDays = ({days,select}) => {
-console.log("TCL: CalendarDays -> select", select)
+// console.log("TCL: CalendarDays -> select", select)
     
     let key = 500;
     const elems = days.map((item)=>{
