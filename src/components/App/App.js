@@ -16,7 +16,7 @@ class App2 extends Component {
         selectWeekMonthPanel: false,
         monthView: true,
         startWeekDay: null,
-        daySelected: null
+        daySelected: moment().format('DD')  //   1,2,3  и т.д.
     }
 
     
@@ -47,71 +47,72 @@ class App2 extends Component {
       ];
 
 
-    renderMonth = (offset) => {
-        console.log("TCL: App2 -> renderMonth -> offset", offset)
-        // console.log(this.eventsData);
-        let currMonth=moment();
-        this.weekData=[];
-        this.headerData=[];        
-        let startMonthDay = moment().add(offset, 'month').startOf('month').day();//номер дня недели начала месяца
-        for(let i=0; i<startMonthDay;i++){   //добавляем пустые ячейки 
-            this.weekData.push({ name: '0'+i });
-        }
-        let numDay=1;  // начинаем отсчет с первого числа
-        for(let i=0; i<moment().add(offset, 'month').daysInMonth();i++){           
-            this.weekData.push( { 
-                redPoint: this.checkRePoint(numDay,offset),
-                daySelected: this.checkDaySel(numDay,offset), 
-               
-                name: numDay++ ,                 
-                wd:this.checkWd(startMonthDay,numDay),                 
-                ev: this.checkEvents(offset,numDay)
-            });  
-        };    
-        this.headerData.push(moment().add(offset-1, 'month').format('MMM'));
-        this.headerData.push(moment().add(offset, 'month').format('MMMM').toLocaleUpperCase());
-        this.headerData.push(moment().add(offset+1, 'month').format('MMM'));  
-        this.headerData.push("");      
+        renderMonth = (offset) => {
+            console.log("TCL: App2 -> renderMonth -> offset", offset)
+            // console.log(this.eventsData);
+            let currMonth=moment();
+            
+            this.weekData=[];
+            this.headerData=[];        
+            let startMonthDay = moment().add(offset, 'month').startOf('month').day();//номер дня недели начала месяца
+            for(let i=0; i<startMonthDay;i++){   //добавляем пустые ячейки 
+                this.weekData.push({ name: '0'+i });
+            }
+            let numDay=1;  // начинаем отсчет с первого числа
+            for(let i=0; i<moment().add(offset, 'month').daysInMonth();i++){           
+                this.weekData.push( { 
+                    redPoint: this.checkRePoint(numDay,offset),
+                    // daySelected: this.checkDaySel(numDay,offset), 
+                
+                    name: numDay++ ,                 
+                    wd:this.checkWd(startMonthDay,numDay),                 
+                    ev: this.checkEvents(offset,numDay)
+                });  
+            };    
+            this.headerData.push(moment().add(offset-1, 'month').format('MMM'));
+            this.headerData.push(moment().add(offset, 'month').format('MMMM').toLocaleUpperCase());
+            this.headerData.push(moment().add(offset+1, 'month').format('MMM'));  
+            this.headerData.push("");      
 
 
 
-    };
-    renderWeek = (offset) => {
-        console.log("TCL: App2 -> renderWeek -> offset", offset)
-        // console.log(this.eventsData);
+        };
+        renderWeek = (offset) => {
+            console.log("TCL: App2 -> renderWeek -> offset", offset)
+            // console.log(this.eventsData);
 
-        let startWeek = moment().add(offset, 'month').startOf('week');
-        let endWeek = moment().add(offset, 'month').endOf('week');
+            let startWeek = moment().add(offset, 'month').startOf('week');
+            let endWeek = moment().add(offset, 'month').endOf('week');
 
-        this.weekData=[];
-        this.headerData=[];  
+            this.weekData=[];
+            this.headerData=[];  
 
-        let startMonthDay = moment().add(offset, 'month').startOf('month').day();//номер дня недели начала месяца
-        
-        let numDay = startWeek.date();  // начинаем отсчет с первого числа 
-        for(let i=0; i<7;i++){           
-            this.weekData.push( { 
-                redPoint: this.checkRePoint(numDay,offset),
-                daySelected: this.checkDaySel(numDay,offset),                
-                name: numDay++ ,                 
-                wd: (i===0 || i===6 ) ? true : false ,                 
-                ev: this.checkEvents(offset,numDay)
-            });  
-        };  
-        let centerText = startWeek.format('MMM DD').toLowerCase();
-        centerText += " - ";
-        centerText +=  startWeek.format('MMM') !== endWeek.format('MMM') ? 
-                             endWeek.format('MMM DD').toLowerCase() : 
-                             endWeek.format('DD').toLowerCase();
-        
-        this.headerData.push("prev");
-        this.headerData.push(centerText);
-        this.headerData.push("next");
-        this.headerData.push("16px");       
+            let startMonthDay = moment().add(offset, 'month').startOf('month').day();//номер дня недели начала месяца
+            
+            let numDay = startWeek.date();  // начинаем отсчет с первого числа 
+            for(let i=0; i<7;i++){           
+                this.weekData.push( { 
+                    redPoint: this.checkRePoint(numDay,offset),
+                    // daySelected: this.checkDaySel(numDay,offset),                
+                    name: numDay++ ,                 
+                    wd: (i===0 || i===6 ) ? true : false ,                 
+                    ev: this.checkEvents(offset,numDay)
+                });  
+            };  
+            let centerText = startWeek.format('MMM DD').toLowerCase();
+            centerText += " - ";
+            centerText +=  startWeek.format('MMM') !== endWeek.format('MMM') ? 
+                                endWeek.format('MMM DD').toLowerCase() : 
+                                endWeek.format('DD').toLowerCase();
+            
+            this.headerData.push("prev");
+            this.headerData.push(centerText);
+            this.headerData.push("next");
+            this.headerData.push("16px");       
 
 
 
-    };
+        };
         checkEvents = (offset,numDay) => {
 
             return (
@@ -120,13 +121,14 @@ class App2 extends Component {
             );
         };
         //указывает на текущую дату (неизменно )
-        checkRePoint = ( nDay, offset) => {   
-            return   ( nDay=== moment().format('D')   &&  offset===0 )? true:false               
+        checkRePoint = ( nDay, offset) => {              
+            return   ( nDay === +(moment().format('D'))   &&  offset===0 )? true:false               
+            
         };
         //указывает вначале на текущую дату (изменяется выбором  )
-        checkDaySel= ( nDay, offset) => {     
-            return  ( nDay=== moment().format('D')   &&  offset===0 )? true:false 
-        };
+        // checkDaySel= ( nDay, offset) => {     
+        //     return  ( nDay=== moment().format('D')   &&  offset===0 )? true:false 
+        // };
         // проверка выходного дня недели
         checkWd =  (stMon,nDay) => {
              return ((stMon+nDay-1)%7 && (stMon+nDay-2)%7)===0? true:false ;
@@ -163,20 +165,27 @@ class App2 extends Component {
                 selectWeekMonthPanel: !this.state.selectWeekMonthPanel
             });
         };
-        monthSelect =() => {
+        monthSelect = () => {
             this.setState({
                 selectWeekMonthPanel: !this.state.selectWeekMonthPanel,
                 monthView: true
             });
         };
-        weekSelect =() => {
+        weekSelect = () => {
             this.setState({
                 selectWeekMonthPanel: !this.state.selectWeekMonthPanel,
                 monthView: false
             });
         };
+        onDaySelectedChange = (daySelected) => {
+        console.log("TCL: App2 -> onDaySelectedChange -> daySelected", daySelected);
+            
+            this.setState({daySelected})
+        };
     
-     
+        /*filterEventsForDay(items,daySelected){
+
+        };*/
 
     
     
@@ -203,7 +212,11 @@ class App2 extends Component {
                 <SelectWeekMonth select = {selectWeekMonth_data} />    
                 <div className={OverflowClazz}> 
                     <CalendarDays days = {this.nameDays} select = {this.state.selectWeekMonthPanel}/>
-                    <CalendarListDate weekData= {this.weekData}/>
+                    <CalendarListDate 
+                        weekData= {this.weekData}
+                        daySelected= {this.state.daySelected}
+                        onDaySelectedChange = {this.onDaySelectedChange}
+                    />
                     <ListEvents data = {this.eventsData} />
                 </div>
         </div>
