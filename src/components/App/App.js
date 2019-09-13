@@ -15,8 +15,8 @@ class App2 extends Component {
         offsetMonth: 0,
         selectWeekMonthPanel: false,
         monthView: true,
-        startWeekDay: null,
-        daySelected: moment().format('DD')  //   1,2,3  и т.д.
+        startWeekDay: moment().startOf('week'),
+        daySelected: null// moment().format('DD')  //   1,2,3  и т.д.
     }
 
     
@@ -52,6 +52,7 @@ class App2 extends Component {
             // console.log(this.eventsData);
             let currMonth=moment();
             
+            
             this.weekData=[];
             this.headerData=[];        
             let startMonthDay = moment().add(offset, 'month').startOf('month').day();//номер дня недели начала месяца
@@ -62,8 +63,6 @@ class App2 extends Component {
             for(let i=0; i<moment().add(offset, 'month').daysInMonth();i++){           
                 this.weekData.push( { 
                     redPoint: this.checkRePoint(numDay,offset),
-                    // daySelected: this.checkDaySel(numDay,offset), 
-                
                     name: numDay++ ,                 
                     wd:this.checkWd(startMonthDay,numDay),                 
                     ev: this.checkEvents(offset,numDay)
@@ -80,21 +79,24 @@ class App2 extends Component {
         renderWeek = (offset) => {
             console.log("TCL: App2 -> renderWeek -> offset", offset)
             // console.log(this.eventsData);
-
-            let startWeek = moment().add(offset, 'month').startOf('week');
-            let endWeek = moment().add(offset, 'month').endOf('week');
+             /*если есть выбранная дата, формируем неделю с выбранной даты */   
+            let startWeek =this.state.daySelected ?
+                moment().add(offset, 'month')
+                        .startOf('month')
+                        .add(this.state.daySelected-1,'days')
+                        .startOf('week')
+              : this.state.startWeekDay ;
+            let endWeek = startWeek.clone().endOf('week');
 
             this.weekData=[];
             this.headerData=[];  
-
-            let startMonthDay = moment().add(offset, 'month').startOf('month').day();//номер дня недели начала месяца
             
-            let numDay = startWeek.date();  // начинаем отсчет с первого числа 
-            for(let i=0; i<7;i++){           
+            for(let i=0; i<7;i++){                   
+                let numDay = startWeek.clone().add(i,'day').date()
                 this.weekData.push( { 
                     redPoint: this.checkRePoint(numDay,offset),
                     // daySelected: this.checkDaySel(numDay,offset),                
-                    name: numDay++ ,                 
+                    name: numDay ,                 
                     wd: (i===0 || i===6 ) ? true : false ,                 
                     ev: this.checkEvents(offset,numDay)
                 });  
@@ -108,8 +110,9 @@ class App2 extends Component {
             this.headerData.push("prev");
             this.headerData.push(centerText);
             this.headerData.push("next");
-            this.headerData.push("16px");       
-
+            this.headerData.push("16px");    
+            
+           
 
 
         };
@@ -124,27 +127,51 @@ class App2 extends Component {
         checkRePoint = ( nDay, offset) => {              
             return   ( nDay === +(moment().format('D'))   &&  offset===0 )? true:false               
             
-        };
-        //указывает вначале на текущую дату (изменяется выбором  )
-        // checkDaySel= ( nDay, offset) => {     
-        //     return  ( nDay=== moment().format('D')   &&  offset===0 )? true:false 
-        // };
+        };      
         // проверка выходного дня недели
         checkWd =  (stMon,nDay) => {
              return ((stMon+nDay-1)%7 && (stMon+nDay-2)%7)===0? true:false ;
         };
 
         nextWeek = () => { 
+                let tmp2 = this.state.offsetMonth;
+                let tmp=this.state.startWeekDay
+                    .clone().add(1,'week')
+                    .endOf('week').date();
 
+                if (tmp>=4 && tmp<=6)  tmp2 = ++this.state.offsetMonth;
+                let m1=this.state.startWeekDay.clone().add(7,'day').month();
+                let m2 = this.state.startWeekDay.month();
+                if(tmp>6 && tmp <10)
+                    if ( m1>m2){
+                        tmp2 = ++this.state.offsetMonth ; 
+                        console.log("TCL: App2 -> nextWeek -> this.state.offsetMonth", 
+                        this.state.offsetMonth, ":   tmp2=",tmp2);
+                        
+                    }
+                     
+
+            
+            // let tmp = this.state.startWeekDay.clone().add(13, 'day').date();
+            //                 console.log("TCL: App2 -> nextWeek -> tmp", tmp);
+
+
+                            
             this.setState({
-                offsetMonth: ++this.state.offsetMonth
+                offsetMonth: tmp2/*>=4 && tmp<=6? ++this.state.offsetMonth : this.state.offsetMonth*/ ,
+                daySelected: null,
+                startWeekDay: this.state.startWeekDay.add(7, 'day')
             });
+            console.log("TCL: App2 -> nextWeek -> this.state.offsetMonth", this.state.offsetMonth)
+              
         };
         prevWeek = () => {
             
             this.setState({
-                offsetMonth: --this.state.offsetMonth
+                daySelected: null,
+                startWeekDay: this.state.startWeekDay.add(-7, 'day')
             });
+
         };
 
         nextMonth = () => { 
