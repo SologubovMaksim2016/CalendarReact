@@ -1,11 +1,9 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
 
-const Header =({dataHeader})=>{
+const Header =({dataHeader}) => {
 
-    let [headerData,nextButton,prevButton,selectWeekMonthPanel
-        ,arrowClick] = dataHeader;
-     
+    let [headerData, nextButton, prevButton, selectWeekMonthPanel, arrowClick] = dataHeader;     
     
     let style = {
       fontSize: headerData[3]

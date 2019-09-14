@@ -3,16 +3,14 @@ import React from 'react';
 
 
 const CalendarDays = ({days,select}) => {
-// console.log("TCL: CalendarDays -> select", select)
     
     let key = 500;
-    const elems = days.map((item)=>{
+    const elems = days.map( (item) => {
         return  <div key={key++} className="calendar__day">{item}</div>;        
-    });   
-    
+    }); 
     
     return ( 
-        select? null :
+        select ? null :
         <div className="calendar__days"> 
            {elems}
         </div>

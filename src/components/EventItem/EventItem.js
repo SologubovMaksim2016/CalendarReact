@@ -3,16 +3,17 @@ import React from 'react';
 import './EventItem.css'
 
 
-const EventItem = ({data})=> {
+const EventItem = ({data}) => {
     
-    let clazz = "events_for ev"+data.ev.length;
+    let clazz = "events_for ev" + data.ev.length;
     let key=1000;
+
     return (        
         <div className={clazz} >
-            {data.ev.map(function (item) {   
-                         
-                clazz = "line "+item;
+            {data.ev.map(  (item) => {   
 
+                clazz = "line "+item;
+                
                 return <div key = {key++} className = {clazz}></div> ;
             })}
         </div>        

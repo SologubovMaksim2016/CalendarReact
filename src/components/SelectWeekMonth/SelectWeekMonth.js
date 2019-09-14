@@ -3,7 +3,8 @@ import React from 'react';
 
 const SelectWeekMonth = ({select}) =>{
 
-   let [selectPanel,monthSelect,weekSelect] = select;
+  let [selectPanel,monthSelect,weekSelect] = select;
+  
     return (
         !selectPanel? null:
         <div className="selectWeekMonth">
