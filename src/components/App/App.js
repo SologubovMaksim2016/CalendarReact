@@ -6,8 +6,18 @@ import CalendarDays from '../CalendarDays/CalendarDays';
 import CalendarListDate from '../CalendarListDate'
 import ListEvents from '../ListEvents';
 import moment from "moment";
-// import eventsData from './eventsData';
+import eventsData from './eventsData';
 
+// function App(){
+//     let evData = eventsData[0];
+//     console.log("TCL: App -> evData", evData);
+    
+//     return(
+//             <div>
+
+//             </div>
+//     ) 
+// }
 
 class App2 extends Component {
 
@@ -16,41 +26,18 @@ class App2 extends Component {
         selectWeekMonthPanel: false,
         monthView: true,
         startWeekDay: moment().startOf('week'),
-        daySelected: null// moment().format('DD')  //   1,2,3  и т.д.
+        daySelected: null
     }
 
     
     nameDays = ['S','M','T','W','T','F','S'];  //дни недели
     weekData=[];
-    headerData = [];
-    eventsData= [
-        {
-            date:"20.06.2019",
-            events:[
-                {
-                name:"event name",
-                body:"event body", 
-                time:"11:00"
-                }
-            ]
-        },
-        {
-            date:"22.06.2019", 
-            events:[
-                {
-                name:"event 2",
-                body:"event 2", 
-                time:"12:00"
-                }
-            ]
-        }
-      ];
+    headerData = [];    
+    eventsData = eventsData;
+    
 
-
-        renderMonth = (offset) => {
-            console.log("TCL: App2 -> renderMonth -> offset", offset)
-            // console.log(this.eventsData);
-            let currMonth=moment();
+        renderMonth = (offset) => {           
+            //let currMonth=moment();
             
             
             this.weekData=[];
@@ -65,7 +52,7 @@ class App2 extends Component {
                     redPoint: this.checkRePoint(numDay,offset),
                     name: numDay++ ,                 
                     wd:this.checkWd(startMonthDay,numDay),                 
-                    ev: this.checkEvents(offset,numDay)
+                    ev: this.checkEvents(offset,numDay,eventsData)
                 });  
             };    
             this.headerData.push(moment().add(offset-1, 'month').format('MMM'));
@@ -77,8 +64,7 @@ class App2 extends Component {
 
         };
         renderWeek = (offset) => {
-            console.log("TCL: App2 -> renderWeek -> offset", offset)
-            // console.log(this.eventsData);
+            
              /*если есть выбранная дата, формируем неделю с выбранной даты */   
             let startWeek =this.state.daySelected ?
                 moment().add(offset, 'month')
@@ -96,9 +82,9 @@ class App2 extends Component {
                 this.weekData.push( { 
                     redPoint: this.checkRePoint(numDay,offset),
                     // daySelected: this.checkDaySel(numDay,offset),                
-                    name: numDay ,                 
+                    name: numDay++ ,                 
                     wd: (i===0 || i===6 ) ? true : false ,                 
-                    ev: this.checkEvents(offset,numDay)
+                    ev: this.checkEvents(offset,numDay,eventsData)
                 });  
             };  
             let centerText = startWeek.format('MMM DD').toLowerCase();
@@ -116,11 +102,22 @@ class App2 extends Component {
 
 
         };
-        checkEvents = (offset,numDay) => {
+        checkEvents = (offset,numDay,eventsData) => {
+        
+        let dates = moment().add(offset,'month').startOf('month').add(numDay-2,'day') ;      
+        
+        let eventForDate = eventsData.filter((obj) =>obj.date===dates.format("DD.MM.YYYY"));
+        let eventArr=[];
+        let i=0;
+        eventForDate.map(()=>{
+            i++%2 ?  eventArr.push("aquamarine") :  eventArr.push("grey")
+        });
 
+                     
+                     
             return (
-
-                ["aquamarine","grey","grey","aquamarine"]
+                eventArr
+               
             );
         };
         //указывает на текущую дату (неизменно )
@@ -139,35 +136,47 @@ class App2 extends Component {
                     .clone().add(1,'week')
                     .endOf('week').date();
 
-                if (tmp>=4 && tmp<=6)  tmp2 = ++this.state.offsetMonth;
+                if (tmp>=4 && tmp<=6)  tmp2 = this.state.offsetMonth+1;
                 let m1=this.state.startWeekDay.clone().add(7,'day').month();
                 let m2 = this.state.startWeekDay.month();
                 if(tmp>6 && tmp <10)
                     if ( m1>m2){
-                        tmp2 = ++this.state.offsetMonth ; 
+                        tmp2 = this.state.offsetMonth+1 ; 
                         console.log("TCL: App2 -> nextWeek -> this.state.offsetMonth", 
                         this.state.offsetMonth, ":   tmp2=",tmp2);
                         
                     }
-                     
-
-            
-            // let tmp = this.state.startWeekDay.clone().add(13, 'day').date();
-            //                 console.log("TCL: App2 -> nextWeek -> tmp", tmp);
-
-
                             
             this.setState({
-                offsetMonth: tmp2/*>=4 && tmp<=6? ++this.state.offsetMonth : this.state.offsetMonth*/ ,
+                offsetMonth: tmp2 ,
                 daySelected: null,
                 startWeekDay: this.state.startWeekDay.add(7, 'day')
             });
-            console.log("TCL: App2 -> nextWeek -> this.state.offsetMonth", this.state.offsetMonth)
+            
               
         };
         prevWeek = () => {
+
+            let tmp2 = this.state.offsetMonth;
+            let tmp = this.state.startWeekDay
+                .clone()
+                .startOf('week')
+                .date();
+                
+
+            if (tmp>2 && tmp <4)  tmp2 = this.state.offsetMonth-1;
+            let m1=this.state.startWeekDay.clone().add(-7,'day').month();
+            let m2 = this.state.startWeekDay.month();
+            if(tmp!==7 /*|| tmp!==??*/)
+                if ( m1<m2){
+                    tmp2 = this.state.offsetMonth-1 ; 
+                    console.log("TCL: App2 -> nextWeek -> this.state.offsetMonth", 
+                    this.state.offsetMonth, ":   tmp2=",tmp2);
+                    
+                }
             
             this.setState({
+                offsetMonth: tmp2 ,
                 daySelected: null,
                 startWeekDay: this.state.startWeekDay.add(-7, 'day')
             });
@@ -177,13 +186,15 @@ class App2 extends Component {
         nextMonth = () => { 
 
             this.setState({
-                offsetMonth: ++this.state.offsetMonth
+                daySelected: null,
+                offsetMonth: this.state.offsetMonth+1
             });
         };
         prevMonth = () => {
             
             this.setState({
-                offsetMonth: --this.state.offsetMonth
+                daySelected: null,
+                offsetMonth: this.state.offsetMonth-1
             });
         };
 
@@ -209,13 +220,7 @@ class App2 extends Component {
             
             this.setState({daySelected})
         };
-    
-        /*filterEventsForDay(items,daySelected){
-
-        };*/
-
-    
-    
+        
     render(){
         
     this.state.monthView?  this.renderMonth(this.state.offsetMonth) :
@@ -229,8 +234,9 @@ class App2 extends Component {
 
     const selectWeekMonth_data =[this.state.selectWeekMonthPanel,this.monthSelect,this.weekSelect];
      
-    const OverflowClazz =  this.state.selectWeekMonthPanel ?   "overflow ovf1" : "overflow"  ;  ;               
+    const OverflowClazz =  this.state.selectWeekMonthPanel ?   "overflow ovf1" : "overflow"  ;                 
     
+    const eventsData = [this.eventsData,this.state.offsetMonth, this.state.daySelected];
 
     return(
        
@@ -244,7 +250,7 @@ class App2 extends Component {
                         daySelected= {this.state.daySelected}
                         onDaySelectedChange = {this.onDaySelectedChange}
                     />
-                    <ListEvents data = {this.eventsData} />
+                    <ListEvents data = {eventsData} />
                 </div>
         </div>
     );

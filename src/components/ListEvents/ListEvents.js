@@ -1,29 +1,30 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import ListEventsItem from '../ListEventsItem';
+import moment, { months } from 'moment';
 
 
-const ListEvents = ({data}) =>{
+const ListEvents = ({data}) =>{ //data,offset,dayselected
+
+    let daySelected = moment()
+                      .add(data[1],'month')
+                      .startOf('months')
+                      .add(data[2]-1,'day');
+
+const dataSelect = data[0].filter( (obj) =>obj.date===daySelected.format("DD.MM.YYYY"));
 
     let key=300;
-    const elems = data.map((item) => {
+    const elems = dataSelect.map((item) => {    
         return (
-            <div key = {key++} className="events">
-            <div className="eventsName">PRACTICEEEE</div>
-            <div className="timeEvents">11:00 AM</div>
-            <div className="descritpionEvents">Sope Greek</div>
-        </div>
+            <ListEventsItem key={key++} item = {item}/>           
         )
     });
-
+   
+    let selectDate = data[2] ? daySelected.format("dddd,  DD  MMMM").toUpperCase()  :  "" ;
+   
     return(
         <div className="listEvents">
-                <div className='dateEvents'> TUESDAY, 20 JUNE</div> 
-                {elems}               
-                {/* <div><ListEventsItem /></div>
-                <div><ListEventsItem /></div>
-                <div><ListEventsItem /></div>
-                <div><ListEventsItem /></div> */}
+                <div className='dateEvents'> {selectDate}</div> 
+                {elems}  
         </div>
     );
 };

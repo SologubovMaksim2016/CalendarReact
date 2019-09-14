@@ -5,7 +5,7 @@ const Header =({dataHeader})=>{
 
     let [headerData,nextButton,prevButton,selectWeekMonthPanel
         ,arrowClick] = dataHeader;
-     console.log("TCL: Header -> size", headerData[3])
+     
     
     let style = {
       fontSize: headerData[3]

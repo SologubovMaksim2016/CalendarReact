@@ -2,12 +2,13 @@ import React from 'react';
 // import ReactDOM from 'react-dom';
 
 
-const ListEventsItem = () => {
+const ListEventsItem = ({item}) => {
+
     return (
         <div className="events">
-            <div className="eventsName">PRACTICEEEE</div>
-            <div className="timeEvents">11:00 AM</div>
-            <div className="descritpionEvents">Sope Greek</div>
+            <div className="eventsName">{item.events[0].name}</div>
+            <div className="timeEvents">{item.events[0].time}</div>
+            <div className="descritpionEvents">{item.events[0].body}</div>
         </div>
     );
 };
